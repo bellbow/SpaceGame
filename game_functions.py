@@ -1,4 +1,5 @@
 import sys
+from time import sleep
 import pygame
 from bullet import Bullet
 from alien import Alien
@@ -48,8 +49,11 @@ def update_screen(ai_settings, screen, ship, aliens, bullets):
     #updates screen
     pygame.display.flip()
 
-#update bullet positions and remove offscreen
-#check for hit and remove bullet and alien
+
+
+
+
+                    #bullet stuff
 def update_bullets(ai_settings, screen, ship, aliens, bullets):
     bullets.update()
     for bullet in bullets.copy():
@@ -63,6 +67,10 @@ def check_bullet_alien_collisions(ai_settings, screen, ship, aliens, bullets):
     if len(aliens) == 0:
         bullets.empty()
         create_fleet(ai_settings, screen, ship, aliens)
+
+
+
+
 
                     #alien stuff
 #aliens in a row
@@ -108,7 +116,25 @@ def change_fleet_direction(ai_settings, aliens):
         alien.rect.y += ai_settings.fleet_drop_speed
     ai_settings.fleet_direction *= -1
 
-def update_aliens(ai_settings, aliens):
+def ship_hit(ai_settings, stats, screen, ship, aliens, bullets):
+    #reduce ships left
+    stats.ships_left -= 1
+
+    #empty aliens and bullets
+    aliens.empty()
+    bullets.empty()
+
+    #new fleet, recenter ship
+    create_fleet(ai_settings, screen, ship, aliens)
+    ship.center_ship()
+
+    #pause
+    sleep(0.5)
+
+def update_aliens(ai_settings, stats, screen, ship, aliens, bullets):
     #check for edge then update aliens
     check_fleet_edges(ai_settings, aliens)
     aliens.update()
+
+    if pygame.sprite.spritecollideany(ship, aliens):
+        ship_hit(ai_settings, stats, screen, ship, aliens, bullets)
