@@ -1,3 +1,4 @@
+from typing import Any
 import pygame
 from pygame.sprite import Sprite
 
@@ -18,6 +19,19 @@ class Alien(Sprite):
         #store position
         self.x = float(self.rect.x)
 
+    def check_edges(self):
+        #hit edge of screen = True
+        screen_rect = self.screen.get_rect()
+        if self.rect.right >= screen_rect.right:
+            return True
+        elif self.rect.left <= 0:
+            return True
+
+    def update(self):
+        #move right or left
+        self.x += (self.ai_settings.alien_speed_factor * self.ai_settings.fleet_direction)
+        self.rect.x = self.x
+    
     def blitme(self):
         "draw alien at its location"
         self.screen.blit(self.image,self.rect)
