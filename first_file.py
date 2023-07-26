@@ -28,7 +28,7 @@ def run_game():
 
     #game main loop - always happening
     while True:
-        gf.check_events(ai_settings, screen, stats, play_button, ship, bullets)
+        gf.check_events(ai_settings, screen, stats, play_button, ship, aliens, bullets)
 
         #game active loop - only while active
         if stats.game_active:
